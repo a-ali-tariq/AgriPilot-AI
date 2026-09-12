@@ -1,0 +1,32 @@
+{
+  "_meta": {"source": "District centroid coordinates for weather lookup, AgriPilot AI.", "schema_version": 1},
+  "provinces": {
+    "Punjab": {
+      "Lahore": [31.5497, 74.3436], "Faisalabad": [31.4180, 73.0790], "Multan": [30.1575, 71.5249],
+      "Rawalpindi": [33.5651, 73.0169], "Sahiwal": [30.6682, 73.1114], "Bahawalpur": [29.3956, 71.6836],
+      "Sargodha": [32.0836, 72.6711], "Gujranwala": [32.1877, 74.1945], "Sialkot": [32.4945, 74.5229],
+      "Rahim Yar Khan": [28.4202, 70.2952], "Dera Ghazi Khan": [30.0489, 70.6455], "Okara": [30.8138, 73.4534],
+      "Vehari": [30.0453, 72.3489], "Jhang": [31.2781, 72.3317], "Layyah": [30.9693, 70.9428]
+    },
+    "Sindh": {
+      "Karachi": [24.8607, 67.0011], "Hyderabad": [25.3960, 68.3578], "Sukkur": [27.7052, 68.8574],
+      "Larkana": [27.5590, 68.2120], "Shaheed Benazirabad": [26.2442, 68.4100], "Mirpurkhas": [25.5276, 69.0126],
+      "Thatta": [24.7461, 67.9235], "Badin": [24.6556, 68.8370], "Dadu": [26.7319, 67.7768],
+      "Ghotki": [28.0044, 69.3159], "Tando Allahyar": [25.4600, 68.7192], "Jacobabad": [28.2769, 68.4514],
+      "Khairpur": [27.5295, 68.7592], "Umerkot": [25.3614, 69.7361]
+    },
+    "Khyber Pakhtunkhwa": {
+      "Peshawar": [34.0151, 71.5249], "Mardan": [34.1989, 72.0231], "Swat (Mingora)": [34.7795, 72.3600],
+      "Abbottabad": [34.1688, 73.2215], "Dera Ismail Khan": [31.8313, 70.9017], "Charsadda": [34.1453, 71.7308],
+      "Nowshera": [34.0153, 71.9747], "Bannu": [32.9889, 70.6056], "Kohat": [33.5869, 71.4414],
+      "Swabi": [34.1201, 72.4700], "Haripur": [33.9944, 72.9333], "Mansehra": [34.3300, 73.1968]
+    },
+    "Balochistan": {
+      "Quetta": [30.1798, 66.9750], "Khuzdar": [27.8120, 66.6100], "Sibi": [29.5430, 67.8773],
+      "Kech (Turbat)": [26.0031, 63.0544], "Loralai": [30.3705, 68.5972], "Zhob": [31.3417, 69.4494],
+      "Nasirabad (Dera Murad Jamali)": [28.5500, 68.0500], "Jaffarabad": [28.3000, 68.3000],
+      "Lasbela (Uthal)": [25.8073, 66.6219], "Pishin": [30.5833, 66.9958], "Mastung": [29.7996, 66.8458],
+      "Qila Saifullah": [30.7050, 68.3500]
+    }
+  }
+}

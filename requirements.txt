@@ -1,0 +1,12 @@
+streamlit==1.40.2
+plotly==5.24.1
+pandas==2.2.3
+reportlab==4.2.5
+Pillow==11.0.0
+requests==2.32.3
+chardet<6          # keeps requests from emitting a version-mismatch warning
+pytest==8.3.4
+
+# Optional — only needed once you wire a live Gemini key.
+# Imported lazily in agripilot/services/llm.py, so the app runs fine without it.
+# google-genai>=1.0.0

@@ -1,0 +1,15 @@
+{
+  "name": "Demo Farm",
+  "province": "Sindh",
+  "district": "Hyderabad",
+  "lat": 25.3960,
+  "lon": 68.3578,
+  "area_acres": 10.0,
+  "soil_type": "loamy",
+  "water_availability": "limited",
+  "irrigation_method": "flood",
+  "planned_crop": "rice",
+  "sowing_date": "07-15",
+  "budget_pkr": 500000.0,
+  "is_demo": true
+}

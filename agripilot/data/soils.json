@@ -1,0 +1,19 @@
+{
+  "_meta": {"source": "Indicative soil characteristics for AgriPilot AI planning estimates.", "schema_version": 1},
+  "soils": {
+    "loamy": {"label": "Loamy", "water_factor": 1.00, "drainage": "good", "note": "Balanced texture, holds moisture well without waterlogging. Suits most crops."},
+    "clay": {"label": "Clay", "water_factor": 0.90, "drainage": "poor", "note": "Holds water long. Good for rice, risky for root crops and in heavy rain."},
+    "clay_loam": {"label": "Clay loam", "water_factor": 0.95, "drainage": "moderate", "note": "Retains moisture with better workability than pure clay."},
+    "sandy": {"label": "Sandy", "water_factor": 1.15, "drainage": "excessive", "note": "Drains fast, needs frequent light irrigation and more organic matter."},
+    "sandy_loam": {"label": "Sandy loam", "water_factor": 1.08, "drainage": "good", "note": "Easy to work, warms early. Good for potato, onion and groundnut."},
+    "silty": {"label": "Silty", "water_factor": 0.98, "drainage": "moderate", "note": "Fertile and moisture-retentive but prone to surface crusting."}
+  },
+  "adjacency": {
+    "loamy": ["clay_loam", "sandy_loam", "silty"],
+    "clay": ["clay_loam"],
+    "clay_loam": ["clay", "loamy", "silty"],
+    "sandy": ["sandy_loam"],
+    "sandy_loam": ["sandy", "loamy"],
+    "silty": ["loamy", "clay_loam"]
+  }
+}
