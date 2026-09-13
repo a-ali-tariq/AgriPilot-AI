@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
 from typing import Any, Optional
 
 from ..config import get_secret, llm_model, llm_provider
@@ -19,7 +20,8 @@ from ..models import Analysis
 log = logging.getLogger(__name__)
 
 TIMEOUT_S = 20
-MAX_RETRIES = 1
+MAX_RETRIES = 2
+RETRY_BACKOFF_S = 1.5
 
 SYSTEM_PROMPT = """You are the explanation layer of AgriPilot AI, an agricultural \
 decision-support tool for farmers in Pakistan.
@@ -120,6 +122,26 @@ def _call_gemini(system: str, user: str) -> Optional[str]:
     except Exception as exc:
         log.warning("Gemini call failed: %s: %s", type(exc).__name__, exc)
         return None
+
+
+def is_configured() -> bool:
+    """True when a call is worth attempting at all.
+
+    Checks key format too: AI Studio keys start with "AIza". A key starting
+    "AQ." is a short-lived ephemeral token that authenticates for a few minutes
+    and then fails as invalid — better to skip straight to the engine text than
+    to spend three retries discovering that.
+    """
+    key = get_secret("LLM_API_KEY")
+    if not key or not key.startswith("AIza"):
+        return False
+    if llm_provider() != "gemini":
+        return False
+    try:
+        import google.genai  # noqa: F401
+    except ImportError:
+        return False
+    return True
 
 
 def _call_provider(system: str, user: str) -> Optional[str]:
@@ -223,17 +245,22 @@ def explain(analysis: Analysis) -> tuple[str, list[str], str]:
         "next steps.\n\n" + payload
     )
 
-    for attempt in range(MAX_RETRIES + 1):
-        raw = _call_provider(SYSTEM_PROMPT, user)
-        if raw is None:
-            break                                   # no key / no SDK — don't retry
-        parsed = _parse_json(raw)
-        if parsed and parsed.get("explanation"):
-            steps = parsed.get("next_steps") or []
-            if isinstance(steps, str):
-                steps = [steps]
-            return str(parsed["explanation"]), [str(s) for s in steps][:5], "llm"
-        log.warning("LLM attempt %s returned unusable output", attempt + 1)
+    # Nothing configured means nothing to retry — go straight to the engine text.
+    if is_configured():
+        for attempt in range(MAX_RETRIES + 1):
+            raw = _call_provider(SYSTEM_PROMPT, user)
+            if raw is not None:
+                parsed = _parse_json(raw)
+                if parsed and parsed.get("explanation"):
+                    steps = parsed.get("next_steps") or []
+                    if isinstance(steps, str):
+                        steps = [steps]
+                    return str(parsed["explanation"]), [str(s) for s in steps][:5], "llm"
+            # A transient failure (503 overload, timeout, unparseable reply) is worth
+            # another attempt; only an unconfigured provider is not.
+            log.warning("LLM attempt %s of %s failed", attempt + 1, MAX_RETRIES + 1)
+            if attempt < MAX_RETRIES:
+                time.sleep(RETRY_BACKOFF_S * (attempt + 1))
 
     text, steps = deterministic_explanation(analysis)
     return text, steps, "deterministic"

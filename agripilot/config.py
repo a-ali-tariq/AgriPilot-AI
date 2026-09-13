@@ -11,6 +11,10 @@ import tomllib
 from functools import lru_cache
 from pathlib import Path
 
+# Model ids are retired over time — gemini-2.0-flash now 503s because it no
+# longer exists. Check `client.models.list()` if calls start failing.
+DEFAULT_GEMINI_MODEL = "gemini-3.5-flash"
+
 DATA_DIR = Path(__file__).parent / "data"
 DB_PATH = Path(__file__).parent.parent / "agripilot.db"
 
@@ -79,8 +83,8 @@ def llm_provider() -> str:
 
 
 def llm_model() -> str:
-    return get_secret("LLM_MODEL", "gemini-2.0-flash")
+    return get_secret("LLM_MODEL", DEFAULT_GEMINI_MODEL)
 
 
 def vision_model() -> str:
-    return get_secret("VISION_MODEL", get_secret("LLM_MODEL", "gemini-2.0-flash"))
+    return get_secret("VISION_MODEL", get_secret("LLM_MODEL", DEFAULT_GEMINI_MODEL))

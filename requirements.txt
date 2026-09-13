@@ -7,6 +7,7 @@ requests==2.32.3
 chardet<6          # keeps requests from emitting a version-mismatch warning
 pytest==8.3.4
 
-# Optional — only needed once you wire a live Gemini key.
-# Imported lazily in agripilot/services/llm.py, so the app runs fine without it.
-# google-genai>=1.0.0
+# Gemini, for AI explanations and crop-image assessment.
+# Imported lazily in services/llm.py and services/vision.py, so the app still
+# runs (on engine-written explanations) if this is unavailable.
+google-genai>=1.0.0

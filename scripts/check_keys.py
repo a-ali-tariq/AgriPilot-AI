@@ -43,6 +43,12 @@ else:
 llm_key = get_secret("LLM_API_KEY")
 if not llm_key:
     line("AI text", False, "no key — explanations come from the calculation engine")
+elif not llm_key.startswith("AIza"):
+    # AI Studio keys start with AIza. A key starting with "AQ." is a short-lived
+    # ephemeral token, which works for a few minutes then fails as invalid.
+    line("AI text", False,
+         f"key starts '{llm_key[:3]}...' — that is not an AI Studio API key. "
+         "Get one at aistudio.google.com/apikey (starts with AIza, never expires)")
 else:
     try:
         import google.genai  # noqa: F401
@@ -56,7 +62,12 @@ else:
              "key set but google-genai is not installed — uncomment it in requirements.txt")
 
 # --- vision ----------------------------------------------------------------
-line("AI vision", bool(llm_key),
-     "shares the AI text key" if llm_key else "no key — image assessment stays unavailable")
+# Vision needs the same key AND the SDK, so reuse the text check rather than
+# reporting OK on key presence alone.
+from agripilot.services.llm import is_configured
+
+line("AI vision", is_configured(),
+     "shares the AI text key and SDK" if is_configured()
+     else "unavailable — image assessment reports itself as such, never guesses")
 
 print("\nThe app runs fully in every OFF case above. Nothing here is required.\n")
