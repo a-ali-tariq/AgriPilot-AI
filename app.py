@@ -89,5 +89,13 @@ st.caption(
     "Built for Pakistan — Punjab, Sindh, Khyber Pakhtunkhwa and Balochistan, in acres and PKR."
 )
 
+st.markdown("---")
+about, contact = st.columns([3, 1], gap="medium")
+with about:
+    st.markdown("**Built by Team AgriNex** — get in touch about the project or the data.")
+with contact:
+    if st.button("Meet the team", use_container_width=True):
+        st.switch_page("pages/11_Team.py")
+
 components.sidebar_summary()
 components.disclaimer()
