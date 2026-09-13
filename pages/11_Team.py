@@ -14,8 +14,7 @@ from ui import components, theme
 TEAM = [
     {
         "name": "Amir Ali Tariq",
-        "role": "Full Stack Developer",
-        "expertise": "Full Stack Development · AWS & GCP Certified",
+        "role": "Full Stack Developer · AWS & GCP Certified",
         "linkedin": "https://www.linkedin.com/in/amiralitariq/",
         "email": "amiralitariq@gmail.com",
         "whatsapp": "923326363256",
@@ -23,18 +22,23 @@ TEAM = [
     {
         "name": "Tariq Aziz",
         "role": "UI/UX Designer",
-        "expertise": "UI/UX Design",
         "linkedin": "https://www.linkedin.com/in/tariqazizkhan",
         "email": "tariqaziz32492@gmail.com",
         "whatsapp": "923435024380",
     },
     {
         "name": "Saliha K",
-        "role": "Product & Documentation",
-        "expertise": "PRD Development · Documentation & Presentation",
-        "linkedin": "",                      # optional: omitted rows are not rendered
+        "role": "PRD Development & Documentation",
+        "linkedin": "",                      # optional: shows N/A when absent
         "email": "skaa6005@gmail.com",
         "whatsapp": "923292094284",
+    },
+    {
+        "name": "Qurrat Ul Ain",
+        "role": "Documentation & Presentation",
+        "linkedin": "https://www.linkedin.com/in/qurrat-ul-ain-2b633a3a3/",
+        "email": "Khanasfand419@gmail.com",
+        "whatsapp": "923339416149",
     },
 ]
 
@@ -76,11 +80,6 @@ st.markdown(
   }}
   .ap-person-name {{ font-size: 1.1rem; font-weight: 650; color: {theme.TEXT}; line-height: 1.25; }}
   .ap-person-role {{ font-size: 0.85rem; color: {theme.MUTED}; }}
-  .ap-person-expertise {{
-    font-size: 0.85rem; color: {theme.TEXT}; background: #F1F5EE;
-    border: 1px solid {theme.BORDER}; border-radius: 8px;
-    padding: 0.45rem 0.65rem; margin-bottom: 0.9rem;
-  }}
   .ap-contact {{ font-size: 0.9rem; line-height: 1.9; }}
   .ap-contact a {{ color: {theme.PRIMARY_DARK}; text-decoration: none; }}
   .ap-contact a:hover {{ text-decoration: underline; }}
@@ -122,7 +121,7 @@ def _contact_rows(person: dict) -> str:
     return "<br>".join(rows)
 
 
-PER_ROW = 3
+PER_ROW = 2
 for start in range(0, len(TEAM), PER_ROW):
     batch = TEAM[start:start + PER_ROW]
     # Pad the final row so a lone card does not stretch across the page.
@@ -139,7 +138,6 @@ for start in range(0, len(TEAM), PER_ROW):
       <div class="ap-person-role">{person['role']}</div>
     </div>
   </div>
-  <div class="ap-person-expertise">{person['expertise']}</div>
   <div class="ap-contact">{_contact_rows(person)}</div>
 </div>
 """,
