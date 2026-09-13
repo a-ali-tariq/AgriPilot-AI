@@ -44,7 +44,7 @@ if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     empty_session = "--empty" in sys.argv
 
-    pages = args or ["app.py"] + sorted(str(p) for p in Path("pages").glob("*.py"))
+    pages = args or ["Home.py"] + sorted(str(p) for p in Path("pages").glob("*.py"))
     analysis = None if empty_session else build_analysis()
     if empty_session:
         print("Running with an EMPTY session: every page must show an empty state, "

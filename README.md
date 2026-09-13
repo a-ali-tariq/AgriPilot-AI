@@ -12,7 +12,7 @@ feasibility estimate, a what-if simulator and a downloadable PDF report.
 cd agripilot-ai
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
-./.venv/bin/python -m streamlit run app.py
+./.venv/bin/python -m streamlit run Home.py
 ```
 
 Then open http://localhost:8501. **No API keys are needed to run the app.** See below.
@@ -32,7 +32,7 @@ set the same names as environment variables instead.
 ## Architecture
 
 ```
-app.py                 Landing page, Streamlit entry point
+Home.py                Landing page, Streamlit entry point
 pages/                 One file per screen, auto-discovered by Streamlit
 ui/                    Theme, components, charts, the input form
 agripilot/
@@ -87,7 +87,7 @@ file under a `--- tunable constants ---` banner:
 
 ## Deploying to Streamlit Community Cloud
 
-1. Push to GitHub, connect the repo, set the entry point to `app.py` and Python to 3.12.
+1. Push to GitHub, connect the repo, set the entry point to `Home.py` and Python to 3.12.
 2. Add the secrets from `.streamlit/secrets.toml.example` in the Cloud dashboard.
 3. Leave `packages.txt` absent. There are no apt dependencies, which is why the PDF
    uses reportlab tables rather than rendered chart images.
