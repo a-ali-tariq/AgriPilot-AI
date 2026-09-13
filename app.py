@@ -9,13 +9,20 @@ from ui import components, theme
 theme.setup("Home", icon="🌾")
 state.init_state()
 
-st.markdown(
-    '<div class="ap-hero">'
-    "<h1>AgriPilot AI</h1>"
-    "<p>Smarter Decisions, Sustainable Agriculture.</p>"
-    "</div>",
-    unsafe_allow_html=True,
-)
+hero_text, hero_logo = st.columns([2.2, 1], gap="medium")
+with hero_text:
+    st.markdown(
+        '<div class="ap-hero">'
+        "<h1>AgriPilot AI</h1>"
+        "<p>Smarter Decisions, Sustainable Agriculture.</p>"
+        '<p style="font-size:0.92rem;margin-top:0.5rem">'
+        "Intelligent Farm Decision &amp; Optimization Engine</p>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+with hero_logo:
+    if theme.LOGO.exists():
+        st.image(str(theme.LOGO), use_container_width=True)
 
 st.markdown(
     "Deciding what to grow means weighing soil, water, weather, cost and price all at once. "

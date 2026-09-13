@@ -1,9 +1,15 @@
 """Page config, palette and CSS injection (PRD §11: clean, no neon, no animation)."""
 from __future__ import annotations
 
+from pathlib import Path
+
 import streamlit as st
 
 from agripilot.config import DISCLAIMER
+
+ASSETS = Path(__file__).parent.parent / "assets"
+LOGO = ASSETS / "logo.png"      # full lockup: symbol, wordmark, tagline
+MARK = ASSETS / "mark.png"      # symbol only, for the tab icon and sidebar
 
 PRIMARY = "#2E7D32"
 PRIMARY_DARK = "#1B5E20"
@@ -86,11 +92,18 @@ CSS = f"""
 
 
 def setup(page_title: str, icon: str = "🌾", layout: str = "wide") -> None:
-    """Call once at the top of every page, before any other Streamlit call."""
+    """Call once at the top of every page, before any other Streamlit call.
+
+    Falls back to the emoji icon if the logo files are missing, so a checkout
+    without assets/ still runs.
+    """
     st.set_page_config(
-        page_title=f"{page_title} · AgriPilot AI", page_icon=icon,
+        page_title=f"{page_title} · AgriPilot AI",
+        page_icon=str(MARK) if MARK.exists() else icon,
         layout=layout, initial_sidebar_state="expanded",
     )
+    if LOGO.exists():
+        st.logo(str(LOGO), icon_image=str(MARK) if MARK.exists() else None, size="large")
     st.markdown(CSS, unsafe_allow_html=True)
 
 

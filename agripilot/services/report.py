@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import io
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Optional
 
 from reportlab.lib import colors
@@ -15,8 +16,14 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
-    KeepTogether, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle,
+    Image as RLImage, KeepTogether, PageBreak, Paragraph, SimpleDocTemplate, Spacer,
+    Table, TableStyle,
 )
+
+# The symbol alone, not the full lockup: at 22mm the wordmark and tagline are
+# illegible, and the title beside it already says the product name. Print-sized
+# so the logo does not add ~700KB to every report.
+LOGO_PATH = Path(__file__).parent.parent.parent / "assets" / "mark_print.png"
 
 from ..config import CROP_HEALTH_DISCLAIMER, DISCLAIMER
 from ..engine import climate as climate_engine
@@ -113,10 +120,31 @@ def build_pdf(
     content_width = doc.width
 
     # --- header ---------------------------------------------------------------
-    story.append(Paragraph("AgriPilot AI — Farm Analysis Report", s["title"]))
-    story.append(Paragraph(
-        f"{farm.name} · {farm.district}, {farm.province} · generated "
-        f"{datetime.now():%d %B %Y}", s["subtitle"]))
+    heading = [
+        Paragraph("AgriPilot AI — Farm Analysis Report", s["title"]),
+        Paragraph(
+            f"{farm.name} · {farm.district}, {farm.province} · generated "
+            f"{datetime.now():%d %B %Y}", s["subtitle"]),
+    ]
+    if LOGO_PATH.exists():
+        # Logo on the right of the title block; falls back to a plain heading
+        # if the asset is missing so the report never fails to build.
+        try:
+            logo = RLImage(str(LOGO_PATH), width=22 * mm, height=22 * mm)
+            header = Table([[heading, logo]],
+                           colWidths=[content_width - 24 * mm, 24 * mm], hAlign="LEFT")
+            header.setStyle(TableStyle([
+                ("VALIGN", (0, 0), (0, 0), "TOP"),
+                ("VALIGN", (1, 0), (1, 0), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+            ]))
+            story.append(header)
+        except Exception:
+            story.extend(heading)
+    else:
+        story.extend(heading)
     if farm.is_demo:
         story.append(Paragraph(
             "<b>DEMO FARM</b> — this report uses sample data from the project brief, "
