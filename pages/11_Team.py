@@ -79,6 +79,9 @@ st.markdown(
     background: {theme.SURFACE}; border: 1px solid {theme.BORDER};
     border-radius: 12px; padding: 1.2rem 1.3rem; height: 100%;
     box-sizing: border-box;
+    /* Matches the horizontal gap between columns, so the space between rows
+       reads the same as the space between cards side by side. */
+    margin-bottom: 1rem;
   }}
   /* Streamlit columns do not stretch their children, so ask the block inside
      each column to fill the row height; the card then matches its neighbours. */
