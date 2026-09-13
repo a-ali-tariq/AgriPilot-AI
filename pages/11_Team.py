@@ -61,90 +61,81 @@ st.caption(
     "Get in touch about the project, the data, or working together."
 )
 
+st.markdown(
+    f"""
+<style>
+  .ap-person {{
+    background: {theme.SURFACE}; border: 1px solid {theme.BORDER};
+    border-radius: 12px; padding: 1.2rem 1.3rem; height: 100%;
+  }}
+  .ap-person-head {{ display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.9rem; }}
+  .ap-avatar {{
+    width: 48px; height: 48px; border-radius: 50%; flex: 0 0 48px;
+    background: {theme.PRIMARY}; color: #fff; font-weight: 650; font-size: 1.05rem;
+    display: flex; align-items: center; justify-content: center;
+  }}
+  .ap-person-name {{ font-size: 1.1rem; font-weight: 650; color: {theme.TEXT}; line-height: 1.25; }}
+  .ap-person-role {{ font-size: 0.85rem; color: {theme.MUTED}; }}
+  .ap-person-expertise {{
+    font-size: 0.85rem; color: {theme.TEXT}; background: #F1F5EE;
+    border: 1px solid {theme.BORDER}; border-radius: 8px;
+    padding: 0.45rem 0.65rem; margin-bottom: 0.9rem;
+  }}
+  .ap-contact {{ font-size: 0.9rem; line-height: 1.9; }}
+  .ap-contact a {{ color: {theme.PRIMARY_DARK}; text-decoration: none; }}
+  .ap-contact a:hover {{ text-decoration: underline; }}
+  .ap-contact-label {{ color: {theme.MUTED}; display: inline-block; min-width: 82px; }}
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
 def _contact_rows(person: dict) -> str:
     """Only render the contact lines a member actually has."""
     rows = []
     if person.get("linkedin"):
         handle = person["linkedin"].split("/in/")[-1].strip("/")
-        rows.append(("LinkedIn", person["linkedin"], handle))
+        rows.append(
+            f'<span class="ap-contact-label">LinkedIn</span>'
+            f'<a href="{person["linkedin"]}" target="_blank" rel="noopener">{handle}</a>'
+        )
     if person.get("email"):
-        rows.append(("Email", f"mailto:{person['email']}", person["email"]))
+        rows.append(
+            f'<span class="ap-contact-label">Email</span>'
+            f'<a href="mailto:{person["email"]}">{person["email"]}</a>'
+        )
     if person.get("whatsapp"):
-        rows.append(("WhatsApp", f"https://wa.me/{person['whatsapp']}",
-                     _pretty_phone(person["whatsapp"])))
-    return "".join(
-        f'<dt>{label}</dt><dd><a href="{href}" target="_blank" rel="noopener">{text}</a></dd>'
-        for label, href, text in rows
-    )
+        rows.append(
+            f'<span class="ap-contact-label">WhatsApp</span>'
+            f'<a href="https://wa.me/{person["whatsapp"]}" target="_blank" rel="noopener">'
+            f'{_pretty_phone(person["whatsapp"])}</a>'
+        )
+    return "<br>".join(rows)
 
 
-def _card(person: dict) -> str:
-    return f"""
-<article class="ap-person">
-  <header class="ap-person-head">
-    <span class="ap-avatar">{_initials(person['name'])}</span>
-    <span>
-      <span class="ap-person-name">{person['name']}</span>
-      <span class="ap-person-role">{person['role']}</span>
-    </span>
-  </header>
-  <p class="ap-person-expertise">{person['expertise']}</p>
-  <dl class="ap-contact">{_contact_rows(person)}</dl>
-</article>"""
-
-
-# One grid rather than st.columns: columns cannot give cards equal heights, and a
-# grid also wraps sensibly on a narrow screen instead of squeezing three abreast.
-st.markdown(
-    f"""
-<style>
-  .ap-team {{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
-    margin: 0.5rem 0 0.5rem;
-  }}
-  .ap-person {{
-    display: flex; flex-direction: column;
-    background: {theme.SURFACE}; border: 1px solid {theme.BORDER};
-    border-radius: 12px; padding: 1.25rem;
-  }}
-  .ap-person-head {{
-    display: flex; align-items: center; gap: 0.8rem;
-    padding-bottom: 0.9rem; margin-bottom: 0.9rem;
-    border-bottom: 1px solid {theme.BORDER};
-  }}
-  .ap-avatar {{
-    width: 44px; height: 44px; border-radius: 50%; flex: 0 0 44px;
-    background: {theme.PRIMARY}; color: #fff;
-    font-weight: 600; font-size: 0.95rem; letter-spacing: 0.02em;
-    display: flex; align-items: center; justify-content: center;
-  }}
-  .ap-person-name {{
-    display: block; font-size: 1.02rem; font-weight: 650;
-    color: {theme.TEXT}; line-height: 1.3;
-  }}
-  .ap-person-role {{ display: block; font-size: 0.85rem; color: {theme.MUTED}; }}
-  .ap-person-expertise {{
-    flex: 1 0 auto;                       /* pushes contacts to a common baseline */
-    font-size: 0.86rem; line-height: 1.5; color: {theme.MUTED};
-    margin: 0 0 1rem 0;
-  }}
-  .ap-contact {{
-    display: grid; grid-template-columns: 5.5rem 1fr;
-    row-gap: 0.4rem; column-gap: 0.5rem;
-    margin: 0; font-size: 0.88rem;
-  }}
-  .ap-contact dt {{ color: {theme.MUTED}; }}
-  .ap-contact dd {{ margin: 0; overflow-wrap: anywhere; }}
-  .ap-contact a,
-  .ap-contact a:visited {{ color: {theme.PRIMARY_DARK}; text-decoration: none; }}
-  .ap-contact a:hover {{ text-decoration: underline; }}
-</style>
-<div class="ap-team">{''.join(_card(p) for p in TEAM)}</div>
+PER_ROW = 3
+for start in range(0, len(TEAM), PER_ROW):
+    batch = TEAM[start:start + PER_ROW]
+    # Pad the final row so a lone card does not stretch across the page.
+    columns = st.columns(PER_ROW, gap="medium")
+    for column, person in zip(columns, batch):
+        with column:
+            st.markdown(
+                f"""
+<div class="ap-person">
+  <div class="ap-person-head">
+    <div class="ap-avatar">{_initials(person['name'])}</div>
+    <div>
+      <div class="ap-person-name">{person['name']}</div>
+      <div class="ap-person-role">{person['role']}</div>
+    </div>
+  </div>
+  <div class="ap-person-expertise">{person['expertise']}</div>
+  <div class="ap-contact">{_contact_rows(person)}</div>
+</div>
 """,
-    unsafe_allow_html=True,
-)
+                unsafe_allow_html=True,
+            )
 
 st.markdown("")
 st.markdown("---")

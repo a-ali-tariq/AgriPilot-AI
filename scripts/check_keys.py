@@ -49,37 +49,19 @@ else:
         import google.genai  # noqa: F401
         from agripilot.services.llm import _call_provider
 
-        # Call directly rather than through _call_provider, so the actual error
-        # can be reported instead of a guess about what went wrong.
-        from google import genai
-        from google.genai import types
-
-        try:
-            # Hold the client in a variable: inlining it lets the object be
-            # collected before the request fires, raising "client has been closed".
-            client = genai.Client(api_key=llm_key)
-            client.models.generate_content(
-                model=llm_model(), contents='Return exactly: {"ok": true}',
-                config=types.GenerateContentConfig(response_mime_type="application/json"),
-            )
+        reply = _call_provider(
+            "Reply with JSON only.", 'Return exactly: {"ok": true}'
+        )
+        if reply:
             line("AI text", True, f"{llm_provider()} · {llm_model()}")
-        except Exception as exc:
-            detail = str(exc)
-            if "RESOURCE_EXHAUSTED" in detail or "429" in detail:
-                reason = ("daily free-tier quota exhausted for this model "
-                          "(20 requests/day). Resets at midnight Pacific time")
-            elif "API_KEY_INVALID" in detail or "401" in detail:
-                reason = "key rejected as invalid" + (
-                    ". This is an OAuth access token (AQ...), which expires after a "
-                    "short period; a key from aistudio.google.com/apikey does not"
-                    if llm_key.startswith("AQ") else "")
-            elif "NOT_FOUND" in detail or "404" in detail:
-                reason = f"model '{llm_model()}' does not exist for this key"
-            elif "UNAVAILABLE" in detail or "503" in detail:
-                reason = "model is overloaded right now. Transient, retry shortly"
-            else:
-                reason = f"call failed: {type(exc).__name__}"
-            line("AI text", False, reason)
+        elif llm_key.startswith("AQ"):
+            # Works, but only for a while, so worth flagging before a demo.
+            line("AI text", False,
+                 "call failed. This key is an OAuth access token (AQ...), which "
+                 "expires after a short period. A key from aistudio.google.com/apikey "
+                 "(AIza...) does not expire")
+        else:
+            line("AI text", False, "key set but the call failed")
     except ImportError:
         line("AI text", False,
              "key set but google-genai is not installed. Uncomment it in requirements.txt")
