@@ -28,6 +28,14 @@ TEAM = [
         "email": "tariqaziz32492@gmail.com",
         "whatsapp": "923435024380",
     },
+    {
+        "name": "Saliha K",
+        "role": "Product & Documentation",
+        "expertise": "PRD Development · Documentation & Presentation",
+        "linkedin": "",                      # optional: omitted rows are not rendered
+        "email": "skaa6005@gmail.com",
+        "whatsapp": "923292094284",
+    },
 ]
 
 
@@ -82,11 +90,38 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-columns = st.columns(min(len(TEAM), 2), gap="medium")
-for column, person in zip(columns * ((len(TEAM) // 2) + 1), TEAM):
-    with column:
-        st.markdown(
-            f"""
+def _contact_rows(person: dict) -> str:
+    """Only render the contact lines a member actually has."""
+    rows = []
+    if person.get("linkedin"):
+        handle = person["linkedin"].split("/in/")[-1].strip("/")
+        rows.append(
+            f'<span class="ap-contact-label">LinkedIn</span>'
+            f'<a href="{person["linkedin"]}" target="_blank" rel="noopener">{handle}</a>'
+        )
+    if person.get("email"):
+        rows.append(
+            f'<span class="ap-contact-label">Email</span>'
+            f'<a href="mailto:{person["email"]}">{person["email"]}</a>'
+        )
+    if person.get("whatsapp"):
+        rows.append(
+            f'<span class="ap-contact-label">WhatsApp</span>'
+            f'<a href="https://wa.me/{person["whatsapp"]}" target="_blank" rel="noopener">'
+            f'{_pretty_phone(person["whatsapp"])}</a>'
+        )
+    return "<br>".join(rows)
+
+
+PER_ROW = 3
+for start in range(0, len(TEAM), PER_ROW):
+    batch = TEAM[start:start + PER_ROW]
+    # Pad the final row so a lone card does not stretch across the page.
+    columns = st.columns(PER_ROW, gap="medium")
+    for column, person in zip(columns, batch):
+        with column:
+            st.markdown(
+                f"""
 <div class="ap-person">
   <div class="ap-person-head">
     <div class="ap-avatar">{_initials(person['name'])}</div>
@@ -96,20 +131,11 @@ for column, person in zip(columns * ((len(TEAM) // 2) + 1), TEAM):
     </div>
   </div>
   <div class="ap-person-expertise">{person['expertise']}</div>
-  <div class="ap-contact">
-    <span class="ap-contact-label">LinkedIn</span>
-    <a href="{person['linkedin']}" target="_blank" rel="noopener">
-      {person['linkedin'].split('/in/')[-1].strip('/')}</a><br>
-    <span class="ap-contact-label">Email</span>
-    <a href="mailto:{person['email']}">{person['email']}</a><br>
-    <span class="ap-contact-label">WhatsApp</span>
-    <a href="https://wa.me/{person['whatsapp']}" target="_blank" rel="noopener">
-      {_pretty_phone(person['whatsapp'])}</a>
-  </div>
+  <div class="ap-contact">{_contact_rows(person)}</div>
 </div>
 """,
-            unsafe_allow_html=True,
-        )
+                unsafe_allow_html=True,
+            )
 
 st.markdown("")
 st.markdown("---")
