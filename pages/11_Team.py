@@ -40,6 +40,13 @@ TEAM = [
         "email": "Khanasfand419@gmail.com",
         "whatsapp": "923339416149",
     },
+    {
+        "name": "Muhammad Faizan",
+        "role": "Research & Analysis",
+        "linkedin": "https://www.linkedin.com/in/muhammad-faizan-ba088836a",
+        "email": "mfaizan663311@gmail.com",
+        "whatsapp": "923100014196",
+    },
 ]
 
 
@@ -121,7 +128,7 @@ def _contact_rows(person: dict) -> str:
     return "<br>".join(rows)
 
 
-PER_ROW = 2
+PER_ROW = 3
 for start in range(0, len(TEAM), PER_ROW):
     batch = TEAM[start:start + PER_ROW]
     # Pad the final row so a lone card does not stretch across the page.
