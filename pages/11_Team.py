@@ -14,7 +14,7 @@ from ui import components, theme
 TEAM = [
     {
         "name": "Amir Ali Tariq",
-        "role": "Full Stack Developer · AWS & GCP Certified",
+        "role": "Full Stack Developer",
         "linkedin": "https://www.linkedin.com/in/amiralitariq/",
         "email": "amiralitariq@gmail.com",
         "whatsapp": "923326363256",
@@ -78,7 +78,12 @@ st.markdown(
   .ap-person {{
     background: {theme.SURFACE}; border: 1px solid {theme.BORDER};
     border-radius: 12px; padding: 1.2rem 1.3rem; height: 100%;
+    box-sizing: border-box;
   }}
+  /* Streamlit columns do not stretch their children, so ask the block inside
+     each column to fill the row height; the card then matches its neighbours. */
+  [data-testid="column"] > div,
+  [data-testid="column"] [data-testid="stVerticalBlock"] {{ height: 100%; }}
   .ap-person-head {{ display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.9rem; }}
   .ap-avatar {{
     width: 48px; height: 48px; border-radius: 50%; flex: 0 0 48px;
@@ -86,7 +91,13 @@ st.markdown(
     display: flex; align-items: center; justify-content: center;
   }}
   .ap-person-name {{ font-size: 1.1rem; font-weight: 650; color: {theme.TEXT}; line-height: 1.25; }}
-  .ap-person-role {{ font-size: 0.85rem; color: {theme.MUTED}; }}
+  /* Reserve two lines for the role so a wrapping role does not make one card
+     taller than its neighbours, which would leave an uneven gap above the
+     next row in that column. */
+  .ap-person-role {{
+    font-size: 0.85rem; color: {theme.MUTED};
+    line-height: 1.3; min-height: 2.6em;
+  }}
   .ap-contact {{ font-size: 0.9rem; line-height: 1.9; }}
   .ap-contact a {{ color: {theme.PRIMARY_DARK}; text-decoration: none; }}
   .ap-contact a:hover {{ text-decoration: underline; }}
