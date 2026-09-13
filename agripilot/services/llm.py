@@ -125,15 +125,13 @@ def _call_gemini(system: str, user: str) -> Optional[str]:
 
 
 def is_configured() -> bool:
-    """True when a call is worth attempting at all.
+    """True when a call is worth attempting: key present, provider wired, SDK importable.
 
-    Checks key format too: AI Studio keys start with "AIza". A key starting
-    "AQ." is a short-lived ephemeral token that authenticates for a few minutes
-    and then fails as invalid — better to skip straight to the engine text than
-    to spend three retries discovering that.
+    Deliberately does not judge the key's format. Both AI Studio keys ("AIza...")
+    and OAuth access tokens ("AQ...") authenticate successfully; the latter simply
+    expire. Whether a credential works is decided by the API, not by its prefix.
     """
-    key = get_secret("LLM_API_KEY")
-    if not key or not key.startswith("AIza"):
+    if not get_secret("LLM_API_KEY"):
         return False
     if llm_provider() != "gemini":
         return False

@@ -43,20 +43,25 @@ else:
 llm_key = get_secret("LLM_API_KEY")
 if not llm_key:
     line("AI text", False, "no key — explanations come from the calculation engine")
-elif not llm_key.startswith("AIza"):
-    # AI Studio keys start with AIza. A key starting with "AQ." is a short-lived
-    # ephemeral token, which works for a few minutes then fails as invalid.
-    line("AI text", False,
-         f"key starts '{llm_key[:3]}...' — that is not an AI Studio API key. "
-         "Get one at aistudio.google.com/apikey (starts with AIza, never expires)")
+
 else:
     try:
         import google.genai  # noqa: F401
         from agripilot.services.llm import _call_provider
 
-        reply = _call_provider("Reply with the word OK.", "Say OK.")
-        line("AI text", bool(reply), f"{llm_provider()} · {llm_model()}"
-             if reply else "key set but the call failed")
+        reply = _call_provider(
+            "Reply with JSON only.", 'Return exactly: {"ok": true}'
+        )
+        if reply:
+            line("AI text", True, f"{llm_provider()} · {llm_model()}")
+        elif llm_key.startswith("AQ"):
+            # Works, but only for a while — worth flagging before a demo.
+            line("AI text", False,
+                 "call failed. This key is an OAuth access token (AQ...), which "
+                 "expires after a short period. A key from aistudio.google.com/apikey "
+                 "(AIza...) does not expire")
+        else:
+            line("AI text", False, "key set but the call failed")
     except ImportError:
         line("AI text", False,
              "key set but google-genai is not installed — uncomment it in requirements.txt")
