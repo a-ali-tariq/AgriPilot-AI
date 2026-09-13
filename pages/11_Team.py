@@ -91,13 +91,22 @@ st.markdown(
 )
 
 def _contact_rows(person: dict) -> str:
-    """Only render the contact lines a member actually has."""
+    """Render every contact line so all cards show the same rows.
+
+    A missing entry shows a muted "N/A" rather than being dropped, which keeps
+    the cards the same shape instead of one being a row shorter.
+    """
     rows = []
     if person.get("linkedin"):
         handle = person["linkedin"].split("/in/")[-1].strip("/")
         rows.append(
             f'<span class="ap-contact-label">LinkedIn</span>'
             f'<a href="{person["linkedin"]}" target="_blank" rel="noopener">{handle}</a>'
+        )
+    else:
+        rows.append(
+            f'<span class="ap-contact-label">LinkedIn</span>'
+            f'<span style="color:{theme.MUTED}">N/A</span>'
         )
     if person.get("email"):
         rows.append(
