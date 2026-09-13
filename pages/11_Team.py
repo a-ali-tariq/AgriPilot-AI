@@ -20,18 +20,11 @@ TEAM = [
         "whatsapp": "923326363256",
     },
     {
-        "name": "Tariq Aziz",
-        "role": "UI/UX Designer",
-        "linkedin": "https://www.linkedin.com/in/tariqazizkhan",
-        "email": "tariqaziz32492@gmail.com",
-        "whatsapp": "923435024380",
-    },
-    {
-        "name": "Saliha K",
-        "role": "PRD Development & Documentation",
-        "linkedin": "",                      # optional: shows N/A when absent
-        "email": "skaa6005@gmail.com",
-        "whatsapp": "923292094284",
+        "name": "Muhammad Faizan",
+        "role": "Research & Analysis",
+        "linkedin": "https://www.linkedin.com/in/muhammad-faizan-ba088836a",
+        "email": "mfaizan663311@gmail.com",
+        "whatsapp": "923100014196",
     },
     {
         "name": "Qurrat Ul Ain",
@@ -41,11 +34,18 @@ TEAM = [
         "whatsapp": "923339416149",
     },
     {
-        "name": "Muhammad Faizan",
-        "role": "Research & Analysis",
-        "linkedin": "https://www.linkedin.com/in/muhammad-faizan-ba088836a",
-        "email": "mfaizan663311@gmail.com",
-        "whatsapp": "923100014196",
+        "name": "Saliha K",
+        "role": "PRD Development & Documentation",
+        "linkedin": "",                      # optional: shows N/A when absent
+        "email": "skaa6005@gmail.com",
+        "whatsapp": "923292094284",
+    },
+    {
+        "name": "Tariq Aziz",
+        "role": "UI/UX Designer",
+        "linkedin": "https://www.linkedin.com/in/tariqazizkhan",
+        "email": "tariqaziz32492@gmail.com",
+        "whatsapp": "923435024380",
     },
 ]
 
@@ -129,8 +129,12 @@ def _contact_rows(person: dict) -> str:
 
 
 PER_ROW = 3
-for start in range(0, len(TEAM), PER_ROW):
-    batch = TEAM[start:start + PER_ROW]
+# Sorted here as well as in the list above, so appending a member keeps the
+# page alphabetical without anyone having to insert them in the right place.
+MEMBERS = sorted(TEAM, key=lambda person: person["name"].casefold())
+
+for start in range(0, len(MEMBERS), PER_ROW):
+    batch = MEMBERS[start:start + PER_ROW]
     # Pad the final row so a lone card does not stretch across the page.
     columns = st.columns(PER_ROW, gap="medium")
     for column, person in zip(columns, batch):
