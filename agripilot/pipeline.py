@@ -22,7 +22,7 @@ def run_analysis(
 ) -> Analysis:
     """Run the full deterministic pipeline, then optionally add an AI explanation.
 
-    `use_llm=False` keeps this pure and fast — that is what the What-If sliders use.
+    `use_llm=False` keeps this pure and fast, which is what the What-If sliders use.
     """
     crop = catalog.crop(crop_id or farm.planned_crop)
     if costs is None:

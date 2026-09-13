@@ -11,7 +11,7 @@ import tomllib
 from functools import lru_cache
 from pathlib import Path
 
-# Model ids are retired over time — gemini-2.0-flash now 503s because it no
+# Model ids are retired over time. gemini-2.0-flash now 503s because it no
 # longer exists. Check `client.models.list()` if calls start failing.
 DEFAULT_GEMINI_MODEL = "gemini-3.5-flash"
 

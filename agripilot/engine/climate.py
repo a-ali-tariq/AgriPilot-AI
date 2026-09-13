@@ -1,7 +1,7 @@
 """Rule-based climate risk identification (PRD §5.5, FR-06).
 
 Each rule is a pure predicate over the farm, crop and weather summary. No
-probabilities are invented by a model — they are fixed rule confidences.
+probabilities are invented by a model; they are fixed rule confidences.
 """
 from __future__ import annotations
 
@@ -106,7 +106,7 @@ def assess(farm: Farm, crop: CropSpec, weather: WeatherSummary) -> list[ClimateR
 
 
 def risk_score(risks: list[ClimateRisk]) -> float:
-    """Overall 0–100 climate risk. Driven by the worst risk, nudged up by the rest."""
+    """Overall 0-100 climate risk. Driven by the worst risk, nudged up by the rest."""
     if not risks:
         return 0.0
     scores = sorted((SEVERITY_SCORE.get(r.severity, 25.0) for r in risks), reverse=True)

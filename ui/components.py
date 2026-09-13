@@ -58,7 +58,7 @@ def demo_banner(analysis: Optional[Analysis] = None) -> None:
     farm = analysis.farm if analysis else st.session_state.get("farm")
     if farm is not None and getattr(farm, "is_demo", False):
         st.markdown(
-            '<div class="ap-demo">DEMO FARM — sample data from the project brief, '
+            '<div class="ap-demo">DEMO FARM: sample data from the project brief, '
             'not a real farm.</div>',
             unsafe_allow_html=True,
         )
@@ -72,7 +72,7 @@ def ai_source_note(analysis: Analysis, on_retry=None) -> None:
     col_a, col_b = st.columns([4, 1])
     with col_a:
         st.caption(
-            "AI explanation unavailable — this summary is generated directly from the "
+            "AI explanation unavailable. This summary is generated directly from the "
             "calculation engine. All numbers are identical either way."
         )
     if on_retry is not None:

@@ -1,4 +1,4 @@
-"""Crop Recommendation — FR-02, FR-03, PRD §5.2."""
+"""Crop Recommendation (FR-02, FR-03, PRD §5.2)."""
 from __future__ import annotations
 
 import streamlit as st

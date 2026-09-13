@@ -1,4 +1,4 @@
-"""Service-layer behaviour with no API keys configured — the deployed default."""
+"""Service-layer behaviour with no API keys configured, the deployed default."""
 from __future__ import annotations
 
 import io

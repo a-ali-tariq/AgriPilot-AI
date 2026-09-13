@@ -1,4 +1,4 @@
-"""Crop Health Image Analysis — FR-09, PRD §5.8."""
+"""Crop Health Image Analysis (FR-09, PRD §5.8)."""
 from __future__ import annotations
 
 import streamlit as st
@@ -52,7 +52,7 @@ if uploaded is not None:
         result = st.session_state.get("crop_health")
         if result:
             if not result.get("available"):
-                st.warning(f"**{result['condition']}** — {result.get('reason', '')}")
+                st.warning(f"**{result['condition']}**: {result.get('reason', '')}")
             else:
                 st.markdown(f"### {result['condition']}")
                 c1, c2 = st.columns(2)
@@ -92,7 +92,7 @@ components.crop_health_disclaimer()
 if not get_secret("LLM_API_KEY"):
     st.info(
         "Image assessment needs a vision model API key. Without one, AgriPilot AI will not "
-        "guess at a condition — a made-up diagnosis is worse than none. Every other part of "
+        "guess at a condition, because a made-up diagnosis is worse than none. Every other part of "
         "the app works without it."
     )
 

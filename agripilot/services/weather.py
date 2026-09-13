@@ -1,6 +1,6 @@
 """Weather lookup with a clearly labelled mock fallback (PRD §9, §10).
 
-Never raises. If anything goes wrong — no API key, network error, bad payload —
+Never raises. If anything goes wrong (no API key, network error, bad payload)
 it returns mock data with `source="mock"` so the UI can say so plainly.
 """
 from __future__ import annotations
@@ -23,7 +23,7 @@ def _redact(message: str) -> str:
     """Strip any appid=... from a message before it reaches a log.
 
     OpenWeatherMap passes the key as a query parameter, and requests puts the
-    full URL into its exception text — so an unredacted log line would leak the
+    full URL into its exception text, so an unredacted log line would leak the
     key (PRD §9: keys must never be exposed).
     """
     return re.sub(r"(appid=)[^&\s]+", r"\1<redacted>", message)
@@ -88,14 +88,14 @@ def get(farm: Farm) -> WeatherSummary:
             source="live",
             location_label=f"{farm.district}, {farm.province}",
         )
-    except Exception as exc:  # network, HTTP, schema — all fall back identically
+    except Exception as exc:  # network, HTTP, schema all fall back identically
         return _mock(farm, f"{type(exc).__name__}: {exc}")
 
 
 def source_label(weather: WeatherSummary) -> str:
     if weather.source == "live":
-        return f"Weather: live — OpenWeatherMap, {weather.location_label}"
+        return f"Weather: live (OpenWeatherMap), {weather.location_label}"
     return (
-        "Weather: demo data — live weather source unavailable. "
+        "Weather: demo data. Live weather source unavailable. "
         f"Showing typical seasonal values for {weather.location_label}."
     )

@@ -2,7 +2,7 @@
 
     python scripts/check_keys.py
 
-Prints no secret values — only whether each key is present and working.
+Prints no secret values, only whether each key is present and working.
 """
 from __future__ import annotations
 
@@ -23,12 +23,12 @@ def line(name: str, ok: bool, detail: str) -> None:
     print(f"  {'OK  ' if ok else 'OFF '} {name:<14} {detail}")
 
 
-print("\nAgriPilot AI — external services\n")
+print("\nAgriPilot AI: external services\n")
 
 # --- weather ---------------------------------------------------------------
 key = get_secret("OPENWEATHER_API_KEY")
 if not key:
-    line("Weather", False, "no key set — app uses clearly-labelled demo data")
+    line("Weather", False, "no key set, app uses clearly-labelled demo data")
 else:
     summary = weather.get(demo_farm())
     if summary.source == "live":
@@ -36,13 +36,13 @@ else:
              f"live · {summary.avg_temp:.0f}C avg, {summary.rainfall_mm_30d:.0f} mm rain")
     else:
         line("Weather", False,
-             f"key set ({len(key)} chars) but the call failed — most often a new key "
+             f"key set ({len(key)} chars) but the call failed. Most often a new key "
              "still activating (can take up to 2 hours)")
 
 # --- llm -------------------------------------------------------------------
 llm_key = get_secret("LLM_API_KEY")
 if not llm_key:
-    line("AI text", False, "no key — explanations come from the calculation engine")
+    line("AI text", False, "no key, explanations come from the calculation engine")
 
 else:
     try:
@@ -55,7 +55,7 @@ else:
         if reply:
             line("AI text", True, f"{llm_provider()} · {llm_model()}")
         elif llm_key.startswith("AQ"):
-            # Works, but only for a while — worth flagging before a demo.
+            # Works, but only for a while, so worth flagging before a demo.
             line("AI text", False,
                  "call failed. This key is an OAuth access token (AQ...), which "
                  "expires after a short period. A key from aistudio.google.com/apikey "
@@ -64,7 +64,7 @@ else:
             line("AI text", False, "key set but the call failed")
     except ImportError:
         line("AI text", False,
-             "key set but google-genai is not installed — uncomment it in requirements.txt")
+             "key set but google-genai is not installed. Uncomment it in requirements.txt")
 
 # --- vision ----------------------------------------------------------------
 # Vision needs the same key AND the SDK, so reuse the text check rather than
@@ -73,6 +73,6 @@ from agripilot.services.llm import is_configured
 
 line("AI vision", is_configured(),
      "shares the AI text key and SDK" if is_configured()
-     else "unavailable — image assessment reports itself as such, never guesses")
+     else "unavailable. Image assessment reports itself as such, never guesses")
 
 print("\nThe app runs fully in every OFF case above. Nothing here is required.\n")

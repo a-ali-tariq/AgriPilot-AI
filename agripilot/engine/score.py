@@ -13,7 +13,7 @@ CAUTION_AT = 45.0
 
 
 def finance_score(finance: FinanceResult) -> float:
-    """Map ROI onto 0–100: break-even scores 50, +50% ROI scores 100."""
+    """Map ROI onto 0-100: break-even scores 50, +50% ROI scores 100."""
     score = clamp(50.0 + finance.roi_pct, 0.0, 100.0)
     if finance.budget_gap < 0:
         score = clamp(score - OVER_BUDGET_PENALTY, 0.0, 100.0)

@@ -1,6 +1,6 @@
 """What-If scenario simulation (PRD §5.7, FR-08).
 
-A scenario never mutates the base inputs — it returns adjusted copies, so the
+A scenario never mutates the base inputs; it returns adjusted copies, so the
 base analysis stays intact for side-by-side comparison.
 """
 from __future__ import annotations

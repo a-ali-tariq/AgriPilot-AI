@@ -97,14 +97,14 @@ def score_climate(crop: CropSpec, weather: WeatherSummary) -> tuple[float, str]:
     if low <= avg <= high:
         return 100.0, (
             f"Average temperature of {avg:.0f}°C sits inside this crop's comfortable "
-            f"range ({low:.0f}–{high:.0f}°C)."
+            f"range ({low:.0f}-{high:.0f}°C)."
         )
     off = (low - avg) if avg < low else (avg - high)
     score = clamp(100.0 - off * CLIMATE_PENALTY_PER_DEG, 0.0, 100.0)
     direction = "below" if avg < low else "above"
     return score, (
         f"Average temperature of {avg:.0f}°C is {off:.1f}°C {direction} this crop's "
-        f"range ({low:.0f}–{high:.0f}°C)."
+        f"range ({low:.0f}-{high:.0f}°C)."
     )
 
 
@@ -128,7 +128,7 @@ def score_budget(farm: Farm, crop: CropSpec) -> tuple[float, str]:
 
 
 def score_crop(farm: Farm, crop: CropSpec, weather: WeatherSummary) -> SuitabilityResult:
-    """Score one crop 0–100 against this farm. Deterministic, no I/O."""
+    """Score one crop 0-100 against this farm. Deterministic, no I/O."""
     soil, soil_why = score_soil(farm, crop)
     season, season_why = score_season(farm, crop)
     water, water_why = score_water(farm, crop)

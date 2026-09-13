@@ -1,4 +1,4 @@
-"""Dashboard — PRD §6."""
+"""Dashboard (PRD §6)."""
 from __future__ import annotations
 
 import streamlit as st
@@ -153,7 +153,7 @@ if rows:
     for row in rows:
         c1, c2, c3, c4 = st.columns([2.4, 1.6, 1.4, 1], gap="small")
         c1.markdown(f"**{row['farm_name']}**" + (" · demo" if row["is_demo"] else ""))
-        c2.caption(f"{row['crop_name']} · {row['district'] or '—'}")
+        c2.caption(f"{row['crop_name']} · {row['district'] or '-'}")
         c3.caption(f"{row['decision_score']:.0f}/100 · {row['decision_label']}")
         if c4.button("Load", key=f"load_{row['id']}", use_container_width=True):
             loaded = db.get(row["id"])

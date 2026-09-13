@@ -1,4 +1,4 @@
-"""Farm Input — FR-01, PRD §5.1."""
+"""Farm Input (FR-01, PRD §5.1)."""
 from __future__ import annotations
 
 import streamlit as st
@@ -38,7 +38,7 @@ if submitted:
             state.set_analysis(analysis)
             db.save(analysis)
             st.success(
-                f"Analysis ready — Farm Decision Score {analysis.decision_score:.0f}/100 "
+                f"Analysis ready. Farm Decision Score {analysis.decision_score:.0f}/100 "
                 f"({analysis.decision_label})."
             )
             st.switch_page("pages/2_Dashboard.py")

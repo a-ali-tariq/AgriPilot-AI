@@ -125,7 +125,7 @@ def check_crops() -> None:
         revenue = crop.get("typical_yield_per_acre", 0) * crop.get("typical_price_pkr", 0)
         if cost and revenue and revenue < cost * 0.8:
             warn(f"{where}: typical revenue ({revenue:,.0f}) is well below typical cost "
-                 f"({cost:,.0f}) — check yield and price")
+                 f"({cost:,.0f}). Check yield and price")
 
 
 def check_soils() -> None:

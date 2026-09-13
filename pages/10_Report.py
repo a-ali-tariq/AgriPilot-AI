@@ -1,4 +1,4 @@
-"""Farm Report — FR-10, PRD §5.10."""
+"""Farm Report (FR-10, PRD §5.10)."""
 from __future__ import annotations
 
 from datetime import date
@@ -18,7 +18,7 @@ analysis = state.require_analysis("the report")
 components.demo_banner(analysis)
 
 st.caption(
-    "A single PDF covering the whole analysis — something you can print, share with a "
+    "A single PDF covering the whole analysis. Something you can print, share with a "
     "lender, or take to your extension officer."
 )
 
@@ -42,7 +42,7 @@ always_in = [
     ("Action plan and disclaimer", f"{len(analysis.ai_next_steps or [])} next steps"),
 ]
 for title, detail in always_in:
-    st.markdown(f"- **{title}** — {detail}")
+    st.markdown(f"- **{title}**: {detail}")
 
 st.markdown("#### Optional sections")
 col_a, col_b, col_c = st.columns(3)
@@ -86,7 +86,7 @@ if st.button("Generate PDF", type="primary", use_container_width=True):
                 crop_health=crop_health if include_health else None,
             )
         st.session_state["report_pdf"] = pdf
-        st.success(f"Report ready — {len(pdf) / 1024:,.0f} KB.")
+        st.success(f"Report ready, {len(pdf) / 1024:,.0f} KB.")
     except Exception as exc:
         st.error(
             "The report could not be generated. Please try again. "

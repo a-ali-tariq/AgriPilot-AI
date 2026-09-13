@@ -53,7 +53,7 @@ def validate_image(data: bytes, mime: str | None = None) -> tuple[str, tuple[int
     if len(data) > MAX_BYTES:
         raise ImageValidationError(
             f"Image is {len(data) / 1024 / 1024:.1f} MB. The limit is "
-            f"{MAX_BYTES // 1024 // 1024} MB — please upload a smaller photo."
+            f"{MAX_BYTES // 1024 // 1024} MB. Please upload a smaller photo."
         )
     if mime and mime.lower() not in ALLOWED_MIME:
         raise ImageValidationError(
@@ -83,7 +83,7 @@ def validate_image(data: bytes, mime: str | None = None) -> tuple[str, tuple[int
         )
     if min(width, height) < MIN_DIMENSION:
         raise ImageValidationError(
-            f"Image is only {width}x{height} pixels — too small to assess. "
+            f"Image is only {width}x{height} pixels, too small to assess. "
             "Please upload a clearer, closer photo."
         )
     if max(width, height) > MAX_DIMENSION:

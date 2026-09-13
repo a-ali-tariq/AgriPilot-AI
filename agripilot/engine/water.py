@@ -34,7 +34,7 @@ def _savings_tips(farm: Farm, crop: CropSpec, stress_level: str) -> list[str]:
     if farm.irrigation_method == "flood":
         tips.append(
             "Flood irrigation loses roughly half the applied water. Laser land levelling or "
-            "switching to furrow irrigation typically saves 20–30%."
+            "switching to furrow irrigation typically saves 20-30%."
         )
     if farm.irrigation_method in ("flood", "furrow", "tubewell") and stress_level in ("high", "critical"):
         tips.append(

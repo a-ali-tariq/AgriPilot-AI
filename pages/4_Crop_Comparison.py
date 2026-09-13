@@ -1,4 +1,4 @@
-"""Crop Comparison — FR-04, PRD §5.3."""
+"""Crop Comparison (FR-04, PRD §5.3)."""
 from __future__ import annotations
 
 import pandas as pd
@@ -95,7 +95,7 @@ st.markdown(
 if best_profit["crop_id"] != best_fit["crop_id"]:
     st.info(
         f"The most profitable crop on paper ({best_profit['crop']}) is not the best fit for "
-        f"your conditions ({best_fit['crop']}). Profit estimates assume the crop grows well — "
+        f"your conditions ({best_fit['crop']}). Profit estimates assume the crop grows well, "
         "a poor fit makes that assumption weaker."
     )
 

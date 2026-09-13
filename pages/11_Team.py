@@ -1,6 +1,6 @@
 """Team & contact.
 
-To add a member, append to TEAM below — nothing else needs to change.
+To add a member, append to TEAM below, nothing else needs to change.
 Phone numbers are stored in full international form without spaces or a
 leading +, because that is what wa.me links require.
 """
@@ -121,7 +121,7 @@ st.markdown(
     "lets you test how the plan holds up when conditions change."
 )
 st.markdown(
-    "Built for Pakistan — Punjab, Sindh, Khyber Pakhtunkhwa and Balochistan, in acres and PKR."
+    "Built for Pakistan: Punjab, Sindh, Khyber Pakhtunkhwa and Balochistan, in acres and PKR."
 )
 
 col_a, col_b = st.columns(2, gap="medium")

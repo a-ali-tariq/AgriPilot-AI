@@ -157,7 +157,7 @@ def farm_form(prefill: Optional[Farm] = None) -> tuple[Farm, CostInputs, bool]:
 
     crop = catalog.crop(crop_id)
     st.caption(
-        f"**{crop.name}** — recommended sowing {crop.sowing_window[0]} to "
+        f"**{crop.name}**: recommended sowing {crop.sowing_window[0]} to "
         f"{crop.sowing_window[1]}, about {crop.duration_days} days to harvest, "
         f"roughly {crop.water_need_mm:.0f} mm of water. {crop.notes}"
     )
@@ -172,7 +172,7 @@ def farm_form(prefill: Optional[Farm] = None) -> tuple[Farm, CostInputs, bool]:
     defaults = finance_engine.default_costs_for(crop)
     typical_total = defaults.per_acre_total() * max(area_acres, 0)
     with st.expander(
-        f"Cost details (optional) — typical total for {area_acres:,.1f} acres is "
+        f"Cost details (optional). Typical total for {area_acres:,.1f} acres is "
         f"about PKR {typical_total:,.0f}"
     ):
         st.caption(

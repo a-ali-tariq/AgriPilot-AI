@@ -1,4 +1,4 @@
-"""Financial Feasibility — FR-07, PRD §5.6."""
+"""Financial Feasibility (FR-07, PRD §5.6)."""
 from __future__ import annotations
 
 import streamlit as st

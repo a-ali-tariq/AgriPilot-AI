@@ -3,7 +3,7 @@
 Two hard rules, enforced here rather than trusted to the model:
   1. The model receives only engine output. It never computes a number.
   2. If the model is unavailable or misbehaves, we fall back to a deterministic
-     explanation built from the engine's own reason strings — the user always
+     explanation built from the engine's own reason strings, the user always
      gets a "why", with or without an API key.
 """
 from __future__ import annotations
@@ -41,7 +41,7 @@ Return ONLY valid JSON in exactly this shape, with no code fences:
 
 
 # --------------------------------------------------------------------------
-# Prompt payload — engine output only
+# Prompt payload, engine output only
 # --------------------------------------------------------------------------
 def build_payload(analysis: Analysis) -> dict[str, Any]:
     a = analysis
@@ -169,7 +169,7 @@ def _parse_json(raw: str) -> Optional[dict]:
 
 
 # --------------------------------------------------------------------------
-# Deterministic fallback (PRD §10) — always available, never fails
+# Deterministic fallback (PRD §10), always available, never fails
 # --------------------------------------------------------------------------
 def deterministic_explanation(analysis: Analysis) -> tuple[str, list[str]]:
     a = analysis
@@ -211,7 +211,7 @@ def deterministic_explanation(analysis: Analysis) -> tuple[str, list[str]]:
         )
     if a.water.stress_level in ("high", "critical"):
         steps.append(
-            f"Address water first — at {a.water.stress_level} stress, "
+            f"Address water first, at {a.water.stress_level} stress, "
             f"{a.water.savings_tips[0].split('.')[0].lower() if a.water.savings_tips else 'improve irrigation efficiency'}."
         )
     for risk in a.climate_risks[:2]:
@@ -243,7 +243,7 @@ def explain(analysis: Analysis) -> tuple[str, list[str], str]:
         "next steps.\n\n" + payload
     )
 
-    # Nothing configured means nothing to retry — go straight to the engine text.
+    # Nothing configured means nothing to retry, go straight to the engine text.
     if is_configured():
         for attempt in range(MAX_RETRIES + 1):
             raw = _call_provider(SYSTEM_PROMPT, user)

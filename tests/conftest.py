@@ -16,7 +16,7 @@ def no_external_keys(monkeypatch):
     """Run every test as if no API keys are configured.
 
     Without this, the suite's results depend on whether the developer happens to
-    have a key in .streamlit/secrets.toml — and it would make real network calls,
+    have a key in .streamlit/secrets.toml, and it would make real network calls,
     which is both slow and flaky. The fallback paths are what we assert on, so
     they must be the paths the tests actually take.
     """

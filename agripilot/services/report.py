@@ -1,6 +1,6 @@
 """PDF report generation with reportlab (FR-10, PRD §5.10).
 
-Pure reportlab — no kaleido, no headless browser — so it works on Streamlit
+Pure reportlab (no kaleido, no headless browser), so it works on Streamlit
 Community Cloud without system packages.
 """
 from __future__ import annotations
@@ -86,7 +86,7 @@ def _pkr(value: float) -> str:
 
 
 def _bar(label: str, value: float, maximum: float = 100.0, width: float = 60 * mm) -> Table:
-    """A score bar drawn as a two-cell table — no image dependency."""
+    """A score bar drawn as a two-cell table, with no image dependency."""
     filled = max(0.0, min(1.0, value / maximum))
     bar = Table([[""]], colWidths=[width * filled or 0.1], rowHeights=[4 * mm])
     color = SEVERITY["low"] if value >= 70 else SEVERITY["medium"] if value >= 45 else SEVERITY["high"]
@@ -112,7 +112,7 @@ def build_pdf(
     doc = SimpleDocTemplate(
         buffer, pagesize=A4,
         leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-        title=f"AgriPilot AI report — {analysis.farm.name}", author="AgriPilot AI",
+        title=f"AgriPilot AI report: {analysis.farm.name}", author="AgriPilot AI",
     )
     s = _styles()
     story: list[Any] = []
@@ -121,7 +121,7 @@ def build_pdf(
 
     # --- header ---------------------------------------------------------------
     heading = [
-        Paragraph("AgriPilot AI — Farm Analysis Report", s["title"]),
+        Paragraph("AgriPilot AI: Farm Analysis Report", s["title"]),
         Paragraph(
             f"{farm.name} · {farm.district}, {farm.province} · generated "
             f"{datetime.now():%d %B %Y}", s["subtitle"]),
@@ -147,7 +147,7 @@ def build_pdf(
         story.extend(heading)
     if farm.is_demo:
         story.append(Paragraph(
-            "<b>DEMO FARM</b> — this report uses sample data from the project brief, "
+            "<b>DEMO FARM.</b> This report uses sample data from the project brief, "
             "not a real farm.", s["demo"]))
 
     # --- 1. farm information --------------------------------------------------
@@ -165,9 +165,9 @@ def build_pdf(
     story.append(Paragraph(
         "Weather data source: "
         + ("live (OpenWeatherMap)" if analysis.weather.source == "live"
-           else "demo data — live weather source was unavailable")
+           else "demo data, live weather source was unavailable")
         + f". Average {analysis.weather.avg_temp:.0f}°C, range "
-          f"{analysis.weather.min_temp:.0f}–{analysis.weather.max_temp:.0f}°C, "
+          f"{analysis.weather.min_temp:.0f}-{analysis.weather.max_temp:.0f}°C, "
           f"rainfall {analysis.weather.rainfall_mm_30d:.0f} mm over 30 days.",
         s["small"]))
 
@@ -175,7 +175,7 @@ def build_pdf(
     story.append(Paragraph("2. Crop recommendation", s["h2"]))
     story.append(Paragraph(
         f"<b>{crop.name}</b> scores <b>{analysis.suitability.score:.0f}/100</b> for suitability "
-        f"on this farm. Overall Farm Decision Score: <b>{analysis.decision_score:.0f}/100 — "
+        f"on this farm. Overall Farm Decision Score: <b>{analysis.decision_score:.0f}/100, "
         f"{analysis.decision_label}</b>.", s["body"]))
     story.append(Spacer(1, 4))
     for label, value in analysis.suitability.subscores().items():
@@ -241,7 +241,7 @@ def build_pdf(
             f"({len(analysis.climate_risks)} risk(s) identified).", s["body"]))
         for risk in analysis.climate_risks:
             story.append(KeepTogether([
-                Paragraph(f"{risk.name} — {risk.severity.upper()} "
+                Paragraph(f"{risk.name}: {risk.severity.upper()} "
                           f"(rule confidence {risk.probability:.0%})", s["h3"]),
                 Paragraph(f"<b>Possible impact:</b> {risk.impact}", s["body"]),
                 Paragraph(f"<b>Suggested action:</b> {risk.action}", s["body"]),
@@ -286,7 +286,7 @@ def build_pdf(
     if crop_health and crop_health.get("available"):
         story.append(Paragraph("8. Crop health image assessment", s["h2"]))
         story.append(Paragraph(
-            f"<b>{crop_health['condition']}</b> — confidence {crop_health['confidence']:.0%}, "
+            f"<b>{crop_health['condition']}</b>, confidence {crop_health['confidence']:.0%}, "
             f"possible severity {crop_health.get('severity', 'unknown')}.", s["body"]))
         for symptom in crop_health.get("symptoms", []):
             story.append(Paragraph(f"• {symptom}", s["body"]))
@@ -297,7 +297,7 @@ def build_pdf(
     story.append(_bar("Decision score", analysis.decision_score))
     story.append(Spacer(1, 4))
     story.append(Paragraph(
-        f"<b>{analysis.decision_label}</b> — Farm Decision Score "
+        f"<b>{analysis.decision_label}</b>, Farm Decision Score "
         f"{analysis.decision_score:.0f}/100.", s["body"]))
     if analysis.ai_explanation:
         for para in analysis.ai_explanation.split("\n\n"):
@@ -322,9 +322,9 @@ def build_pdf(
         canvas.saveState()
         canvas.setFont("Helvetica", 7.5)
         canvas.setFillColor(MUTED)
-        canvas.drawString(18 * mm, 10 * mm, "AgriPilot AI — decision-support estimates")
+        canvas.drawString(18 * mm, 10 * mm, "AgriPilot AI: decision-support estimates")
         if farm.is_demo:
-            canvas.drawCentredString(A4[0] / 2, 10 * mm, "DEMO FARM — sample data")
+            canvas.drawCentredString(A4[0] / 2, 10 * mm, "DEMO FARM: sample data")
         canvas.drawRightString(A4[0] - 18 * mm, 10 * mm, f"Page {document.page}")
         canvas.restoreState()
 

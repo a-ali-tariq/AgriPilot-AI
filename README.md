@@ -1,6 +1,6 @@
 # AgriPilot AI
 
-**Team AgriNex — "Smarter Decisions, Sustainable Agriculture."**
+**Team AgriNex.** "Smarter Decisions, Sustainable Agriculture."
 
 An agricultural decision-support app for Pakistani farmers. Enter your farm, and it
 returns a crop suitability analysis, an irrigation plan, climate risks, a financial
@@ -15,7 +15,7 @@ python3 -m venv .venv
 ./.venv/bin/python -m streamlit run app.py
 ```
 
-Then open http://localhost:8501. **No API keys are needed to run the app** — see below.
+Then open http://localhost:8501. **No API keys are needed to run the app.** See below.
 
 ## Keys are optional
 
@@ -32,13 +32,13 @@ set the same names as environment variables instead.
 ## Architecture
 
 ```
-app.py                 Landing page — Streamlit entry point
+app.py                 Landing page, Streamlit entry point
 pages/                 One file per screen, auto-discovered by Streamlit
 ui/                    Theme, components, charts, the input form
 agripilot/
   models.py            Dataclasses shared by everything
   catalog.py           Loads the JSON knowledge base
-  pipeline.py          run_analysis() — the single entry point every page uses
+  pipeline.py          run_analysis(), the single entry point every page uses
   engine/              Deterministic calculations. No I/O, no LLM, no streamlit.
   services/            Weather, LLM, vision, PDF. Everything that can fail.
   db.py                SQLite persistence for recent analyses
@@ -89,14 +89,14 @@ file under a `--- tunable constants ---` banner:
 
 1. Push to GitHub, connect the repo, set the entry point to `app.py` and Python to 3.12.
 2. Add the secrets from `.streamlit/secrets.toml.example` in the Cloud dashboard.
-3. Leave `packages.txt` absent — there are no apt dependencies, which is why the PDF
+3. Leave `packages.txt` absent. There are no apt dependencies, which is why the PDF
    uses reportlab tables rather than rendered chart images.
 4. Smoke test the demo farm flow on the public URL from a phone.
 
 ## Data
 
 Crop figures in `agripilot/data/crops.json` are indicative national-average planning
-figures for Pakistan (2024–25 cost and price bands), not market quotes. They are marked
+figures for Pakistan (2024-25 cost and price bands), not market quotes. They are marked
 as such in the file's `_meta.source` and are meant to be corrected by whoever owns
 agricultural data. The schema does not change when the numbers do.
 

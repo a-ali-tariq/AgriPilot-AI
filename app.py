@@ -1,4 +1,4 @@
-"""AgriPilot AI — landing page and Streamlit entry point."""
+"""AgriPilot AI (landing page and Streamlit entry point)."""
 from __future__ import annotations
 
 import streamlit as st
@@ -26,7 +26,7 @@ with hero_logo:
 
 st.markdown(
     "Deciding what to grow means weighing soil, water, weather, cost and price all at once. "
-    "AgriPilot AI brings those together into one clear recommendation — with the reasoning "
+    "AgriPilot AI brings those together into one clear recommendation, with the reasoning "
     "shown, not hidden."
 )
 
@@ -58,14 +58,14 @@ with col_b:
             state.load_demo_farm()
         st.switch_page("pages/2_Dashboard.py")
 st.caption(
-    "Demo Farm: 10 acres of rice near Hyderabad, Sindh — limited water, PKR 500,000 budget."
+    "Demo Farm: 10 acres of rice near Hyderabad, Sindh. Limited water, PKR 500,000 budget."
 )
 
 st.markdown("---")
 st.subheader("What it does")
 
 features = [
-    ("Crop recommendation", "Scores your planned crop on soil, season, water, climate and budget — and says why."),
+    ("Crop recommendation", "Scores your planned crop on soil, season, water, climate and budget, and says why."),
     ("Crop comparison", "Put up to four crops side by side on water, cost, yield, profit and risk."),
     ("Irrigation plan", "Seasonal water requirement, irrigation frequency, stage-by-stage schedule and savings tips."),
     ("Climate risk", "Heat stress, drought, heavy rain and water shortage, each with a practical action."),
@@ -86,13 +86,13 @@ for row in range(0, len(features), 4):
 
 st.markdown("")
 st.caption(
-    "Built for Pakistan — Punjab, Sindh, Khyber Pakhtunkhwa and Balochistan, in acres and PKR."
+    "Built for Pakistan: Punjab, Sindh, Khyber Pakhtunkhwa and Balochistan, in acres and PKR."
 )
 
 st.markdown("---")
 about, contact = st.columns([3, 1], gap="medium")
 with about:
-    st.markdown("**Built by Team AgriNex** — get in touch about the project or the data.")
+    st.markdown("**Built by Team AgriNex.** Get in touch about the project or the data.")
 with contact:
     if st.button("Meet the team", use_container_width=True):
         st.switch_page("pages/11_Team.py")

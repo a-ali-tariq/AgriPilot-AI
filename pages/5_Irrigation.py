@@ -1,4 +1,4 @@
-"""Irrigation Optimizer — FR-05, PRD §5.4."""
+"""Irrigation Optimizer (FR-05, PRD §5.4)."""
 from __future__ import annotations
 
 import pandas as pd
@@ -109,6 +109,6 @@ with st.expander("What if I changed irrigation method?"):
             "Water stress": alt.stress_level.title(),
         })
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
-    st.caption("Same crop, same weather, same soil — only the irrigation method changes.")
+    st.caption("Same crop, same weather, same soil. Only the irrigation method changes.")
 
 components.disclaimer()

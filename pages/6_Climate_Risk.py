@@ -1,4 +1,4 @@
-"""Climate Risk — FR-06, PRD §5.5."""
+"""Climate Risk (FR-06, PRD §5.5)."""
 from __future__ import annotations
 
 import streamlit as st
@@ -27,10 +27,10 @@ with c1:
     )
 with c2:
     components.scorecard("Average temperature", f"{weather.avg_temp:.0f}°C",
-                         f"Crop range {analysis.crop.temp_range_c[0]:.0f}–"
+                         f"Crop range {analysis.crop.temp_range_c[0]:.0f}-"
                          f"{analysis.crop.temp_range_c[1]:.0f}°C")
 with c3:
-    components.scorecard("Temperature range", f"{weather.min_temp:.0f}–{weather.max_temp:.0f}°C",
+    components.scorecard("Temperature range", f"{weather.min_temp:.0f}-{weather.max_temp:.0f}°C",
                          "Recent minimum and maximum")
 with c4:
     components.scorecard("Rainfall", f"{weather.rainfall_mm_30d:.0f} mm",
@@ -49,7 +49,7 @@ if analysis.climate_risks:
 else:
     st.success(
         "No significant climate risks detected for this crop, location and season based on "
-        "the available weather data. Conditions can still change — check local forecasts "
+        "the available weather data. Conditions can still change, so check local forecasts "
         "before sowing."
     )
 
